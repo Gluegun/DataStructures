@@ -1,52 +1,53 @@
 package binary_tree;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class BinaryTree {
 
-    static class Node {
-        String data;
-        Node left;
-        Node right;
+    private Node root;
 
-        Node(String data) {
-            this.data = data;
-        }
-
-        @Override
-        public String toString() {
-            return "Node{" +
-                    "data='" + data + '\'' +
-                    '}';
-        }
+    public Node getRoot() {
+        return root;
     }
 
-    public Node root;
 
     public void addNode(String data) {
-        //TODO
+
         Node node = new Node(data);
+
         if (root == null) {
+
             root = node;
+
         } else {
+
             Node focusNode = root;
 
             Node parent;
+            Node toSet;
+
             while (true) {
+
                 parent = focusNode;
-                if (data.compareTo(focusNode.data) < focusNode.data.compareTo(data)) {
-                    focusNode = focusNode.left;
+
+                if (data.compareTo(focusNode.getData()) < focusNode.getData().compareTo(data)) {
+
+                    focusNode = focusNode.getLeft();
+
                     if (focusNode == null) {
-                        parent.left = node;
+                        parent.setLeft(node);
+                        parent.getLeft().setParent(parent);
+
                         return;
                     }
+
                 } else {
 
-                    focusNode = focusNode.right;
+                    focusNode = focusNode.getRight();
 
                     if (focusNode == null) {
-                        parent.right = node;
+
+                        parent.setRight(node);
+                        parent.getRight().setParent(parent);
+
                         return;
                     }
                 }
@@ -54,53 +55,15 @@ public class BinaryTree {
         }
     }
 
-    public void inOrderTraverseTree(Node focusNode) {
-        if (focusNode != null) {
-            inOrderTraverseTree(focusNode.left);
-
-            System.out.println(focusNode);
-
-            inOrderTraverseTree(focusNode.right);
-
-        }
-
-
-    }
-
-    public void preOrderTraverseTree(Node focusNode) {
-        if (focusNode != null) {
-
-            System.out.println(focusNode);
-
-            preOrderTraverseTree(focusNode.left);
-
-            preOrderTraverseTree(focusNode.right);
-
-        }
-    }
-
-    public void postOrderTraversalTree(Node focusNode) {
-        if (focusNode != null) {
-
-            postOrderTraversalTree(focusNode.left);
-
-            postOrderTraversalTree(focusNode.right);
-
-            System.out.println(focusNode);
-        }
-
-
-    }
-
     public Node findNode(String data) {
 
         Node focusNode = root;
+        while (!focusNode.getData().equals(data)) {
 
-        while (!focusNode.data.equals(data)) {
-            if (data.compareTo(focusNode.data) < focusNode.data.compareTo(data)) {
-                focusNode = focusNode.left;
+            if (data.compareTo(focusNode.getData()) < focusNode.getData().compareTo(data)) {
+                focusNode = focusNode.getLeft();
             } else {
-                focusNode = focusNode.right;
+                focusNode = focusNode.getRight();
             }
             if (focusNode == null) {
                 return null;
@@ -109,27 +72,16 @@ public class BinaryTree {
         return focusNode;
     }
 
+    public void inOrderTraverseTree(Node node) {
 
-    public List<Node> searchNodes(String data) {
+        if(node != null) {
 
-        List<Node> nodes = new ArrayList<>();
+            inOrderTraverseTree(node.getLeft());
 
-        Node focusNode = root;
+            System.out.println(node.getData());
 
-        while (!focusNode.data.equals(data)) {
-            if (data.compareTo(focusNode.data) < focusNode.data.compareTo(data)) {
-                focusNode = focusNode.left;
-                nodes.add(focusNode);
-            } else {
-                focusNode = focusNode.right;
-                nodes.add(focusNode);
-            }
-            if (focusNode == null) {
-                return null;
-            }
+            inOrderTraverseTree(node.getRight());
+
         }
-        return nodes;
     }
 }
-
-
